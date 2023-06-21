@@ -82,6 +82,10 @@ while running:
             with open('db.txt','w') as database:
                 json.dump(estrelas,database)
 
+
+
+        print('asjhdkjashdkja')
+
     pygame.display.update()
     clock.tick(40)
 
