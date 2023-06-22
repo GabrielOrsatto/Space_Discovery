@@ -1,4 +1,5 @@
 import pygame
+from tkinter import simpledialog
 
 #inicializar o pygame
 pygame.init()
@@ -13,12 +14,14 @@ pygame.display.set_caption("Space Discovery")
 pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(-1)
 clock = pygame.time.Clock()
+fonte = pygame.font.SysFont(None, 20)
 
 space = pygame.image.load("space.png")
 
 running = True
 
-circulos = []
+estrelas = {}
+posicoes = []
 
 while running:
     for event in pygame.event.get():
@@ -26,20 +29,30 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             pygame.quit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                circulos.append(event.pos)
-
-    #aqui vai o código em si
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+            pos = pygame.mouse.get_pos()
+            nome = simpledialog.askstring("Space", "Nome da Estrela: ")
+            if nome is not None:
+                if nome.strip() == "":
+                    nome = "Desconhecido"+str(pos)       
+                estrelas[nome] = pos
+                posicoes.append(pos)
+                print(estrelas)
+               
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
-    for posicao in circulos:
-        pygame.draw.circle(tela, branco, posicao, 5)
+    for nome, pos in estrelas.items(): 
+        if nome != "":
+            pygame.draw.circle(tela, branco, pos, 5)
+            texto = fonte.render(nome, True, branco)
+            tela.blit(texto, pos)
 
+            for item in posicoes:
+                if len(estrelas) >= 2:
+                    pygame.draw.lines(tela, branco, False, posicoes, 1)
 
     pygame.display.update()
     clock.tick(40)
 
-    
 pygame.quit()
