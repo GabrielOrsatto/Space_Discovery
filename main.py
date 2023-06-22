@@ -22,6 +22,10 @@ running = True
 
 estrelas = {}
 posicoes = []
+<<<<<<< HEAD
+=======
+
+>>>>>>> aff991a7c68629e2ddc5c50c334043eda19e1aff
 
 while running:
     for event in pygame.event.get():
@@ -37,20 +41,35 @@ while running:
                     nome = "Desconhecido"+str(pos)       
                 estrelas[nome] = pos
                 posicoes.append(pos)
+<<<<<<< HEAD
                 print(estrelas)
                
+=======
+                print(nome)
+
+    #aqui vai o código em si
+>>>>>>> aff991a7c68629e2ddc5c50c334043eda19e1aff
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
     for nome, pos in estrelas.items(): 
         if nome != "":
             pygame.draw.circle(tela, branco, pos, 5)
+<<<<<<< HEAD
             texto = fonte.render(nome, True, branco)
             tela.blit(texto, pos)
 
             for item in posicoes:
                 if len(estrelas) >= 2:
                     pygame.draw.lines(tela, branco, False, posicoes, 1)
+=======
+            fonte = pygame.font.SysFont(None, 20)
+            texto = fonte.render(nome, True, branco)
+            tela.blit(texto, pos)
+    for item in posicoes:
+        if len(posicoes) >= 2:
+            pygame.draw.lines(tela, branco, False, posicoes, 2)
+>>>>>>> aff991a7c68629e2ddc5c50c334043eda19e1aff
 
     pygame.display.update()
     clock.tick(40)
