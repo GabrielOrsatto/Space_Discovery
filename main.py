@@ -1,4 +1,5 @@
 import pygame
+import json
 from tkinter import simpledialog
 
 #inicializar o pygame
@@ -15,12 +16,9 @@ pygame.mixer.music.load("musica.mp3")
 pygame.mixer.music.play(-1)
 clock = pygame.time.Clock()
 fonte = pygame.font.SysFont(None, 20)
-
-space = pygame.image.load("space.png")
-
-F10 = fonte.render("PRESSIONE F10 PARA SALVAR OS PONTOS", True, branco)
-F11 = fonte.render("PRESSIONE F11 PARA CARREGAR OS PONTOS", True, branco)
-F12 = fonte.render("PRESSIONE F12 PARA DELETAR OS PONTOS",True, branco)
+F10 = fonte.render('Pressione F10 para salvar os pontos', True, branco)
+F11 = fonte.render('Pressione F11 para carregar os pontos', True, branco)
+F12 = fonte.render('Pressione F12 para deletar os pontos', True, branco)
 
 running = True
 
@@ -32,32 +30,48 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             pygame.quit()
-
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F10:
+            try:
+                with open('db.txt','w') as database:
+                    json.dump(estrelas,database)
+            except:
+                print("Erro ao criar base de dados")
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+            try:
+                with open('db.txt') as database:
+                    estrelas = json.load(database)
+            except:
+                print("Erro ao salvar os pontos")
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
+            estrelas.clear()
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-            pos = pygame.mouse.get_pos()
-            nome = simpledialog.askstring("Space", "Nome da Estrela: ")
-            if nome is not None:
-                if nome.strip() == "":
-                    nome = "Desconhecido"+str(pos)
-                estrelas[nome] = pos
+            posicaoEstrela = pygame.mouse.get_pos()
+            nomeEstrela = simpledialog.askstring("Space", "Nome da Estrela: ")
+            if nomeEstrela is not None:
+                if nomeEstrela.strip() == "":
+                    nomeEstrela = "Desconhecido"+str(posicaoEstrela)      
+                estrelas[nomeEstrela] = posicaoEstrela
                 print(estrelas)
-
-
+               
     tela.blit(fundo, (0,0) )
-    tela.blit(space, (50,30) )
     tela.blit(F10, (690, 480))
     tela.blit(F11, (690, 500))
     tela.blit(F12, (690, 520))
 
-    for nome, pos in estrelas.items(): 
-        if nome != "":
-            pygame.draw.circle(tela, branco, pos, 5)
-            texto = fonte.render(nome, True, branco)
-            tela.blit(texto, pos)
 
-    if len(estrelas) >= 2:
-        pontos = list(estrelas.values())
-        pygame.draw.lines(tela, branco, False, pontos, 2)
+    for nomeEstrela, posicaoEstrela in estrelas.items():
+        try:
+            if nomeEstrela != "":
+                pygame.draw.circle(tela, branco, posicaoEstrela, 5)
+                texto = fonte.render(nomeEstrela, True, branco)
+                tela.blit(texto, posicaoEstrela)
+        except:
+            print("Erro 273627x02. Reinicie a aplicação!")
+        if len(estrelas) >= 2:
+            pontos = list(estrelas.values())
+            pygame.draw.lines(tela, branco, False, pontos, 1)
+            with open('db.txt','w') as database:
+                json.dump(estrelas,database)
 
     pygame.display.update()
     clock.tick(40)
