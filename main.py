@@ -30,21 +30,23 @@ while running:
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
             pos = pygame.mouse.get_pos()
             nome = simpledialog.askstring("Space", "Nome da Estrela: ")
-            if nome is None or nome.strip() == "":
-                nome = "Desconhecido"+str(pos)       
-            estrelas.append((nome,pos))
-            print(nome)
+            if nome is not None:
+                if nome.strip() == "":
+                    nome = "Desconhecido"+str(pos)       
+                estrelas.append((nome,pos))
+                print(nome)
                  
     #aqui vai o código em si
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
     for nome, pos in estrelas: 
-        pygame.draw.circle(tela, branco, pos, 5)
-        texto = nome
-        fonte = pygame.font.SysFont(None, 20)
-        textoFormatado = fonte.render(texto, True, branco)
-        tela.blit(textoFormatado, pos)
+        if nome != "":
+            pygame.draw.circle(tela, branco, pos, 5)
+            texto = nome
+            fonte = pygame.font.SysFont(None, 20)
+            textoFormatado = fonte.render(texto, True, branco)
+            tela.blit(textoFormatado, pos)
 
 
     pygame.display.update()
