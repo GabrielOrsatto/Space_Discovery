@@ -1,4 +1,5 @@
 import pygame
+from tkinter import simpledialog
 
 #inicializar o pygame
 pygame.init()
@@ -19,6 +20,7 @@ space = pygame.image.load("space.png")
 running = True
 
 circulos = []
+estrelas  = []
 
 while running:
     for event in pygame.event.get():
@@ -26,17 +28,28 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             pygame.quit()
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                circulos.append(event.pos)
+        elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+             pos = pygame.mouse.get_pos()
+             circulos.append(pos)
+             item = simpledialog.askstring("Space", "Nome da Estrela: ")
+             print(item)
+             if item == None:
+                item = "Desconhecido" + ": " + str(pos)
+                estrelas.append((item, pos))
+                print(item)
 
     #aqui vai o código em si
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
-    for posicao in circulos:
-        pygame.draw.circle(tela, branco, posicao, 5)
+    for pos in circulos:
+        pygame.draw.circle(tela, branco, pos, 5)
 
+    for nome, pos in estrelas: 
+        texto = nome
+        fonte = pygame.font.SysFont(None, 20)
+        textoCor = fonte.render(texto, True, (255, 255, 255))
+        tela.blit(textoCor, pos)
 
     pygame.display.update()
     clock.tick(40)
