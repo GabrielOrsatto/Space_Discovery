@@ -19,7 +19,9 @@ space = pygame.image.load("space.png")
 
 running = True
 
-estrelas = []
+estrelas = {}
+posicoes = []
+
 
 while running:
     for event in pygame.event.get():
@@ -33,21 +35,23 @@ while running:
             if nome is not None:
                 if nome.strip() == "":
                     nome = "Desconhecido"+str(pos)       
-                estrelas.append((nome,pos))
+                estrelas[nome] = pos
+                posicoes.append(pos)
                 print(nome)
-                 
+
     #aqui vai o código em si
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
-    for nome, pos in estrelas: 
+    for nome, pos in estrelas.items(): 
         if nome != "":
             pygame.draw.circle(tela, branco, pos, 5)
-            texto = nome
             fonte = pygame.font.SysFont(None, 20)
-            textoFormatado = fonte.render(texto, True, branco)
-            tela.blit(textoFormatado, pos)
-
+            texto = fonte.render(nome, True, branco)
+            tela.blit(texto, pos)
+    for item in posicoes:
+        if len(posicoes) >= 2:
+            pygame.draw.lines(tela, branco, False, posicoes, 2)
 
     pygame.display.update()
     clock.tick(40)
