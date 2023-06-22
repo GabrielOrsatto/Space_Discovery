@@ -19,8 +19,7 @@ space = pygame.image.load("space.png")
 
 running = True
 
-circulos = []
-estrelas  = []
+estrelas = []
 
 while running:
     for event in pygame.event.get():
@@ -29,30 +28,26 @@ while running:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             pygame.quit()
         elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
-             pos = pygame.mouse.get_pos()
-             circulos.append(pos)
-             item = simpledialog.askstring("Space", "Nome da Estrela: ")
-             print(item)
-             if item == None:
-                item = "Desconhecido" + ": " + str(pos)
-                estrelas.append((item, pos))
-                print(item)
-
+            pos = pygame.mouse.get_pos()
+            nome = simpledialog.askstring("Space", "Nome da Estrela: ")
+            if nome is None or nome.strip() == "":
+                nome = "Desconhecido"+str(pos)       
+            estrelas.append((nome,pos))
+            print(nome)
+                 
     #aqui vai o código em si
     tela.blit(fundo, (0,0) )
     tela.blit(space, (50,30) )
 
-    for pos in circulos:
-        pygame.draw.circle(tela, branco, pos, 5)
-
     for nome, pos in estrelas: 
+        pygame.draw.circle(tela, branco, pos, 5)
         texto = nome
         fonte = pygame.font.SysFont(None, 20)
-        textoCor = fonte.render(texto, True, (255, 255, 255))
-        tela.blit(textoCor, pos)
+        textoFormatado = fonte.render(texto, True, branco)
+        tela.blit(textoFormatado, pos)
+
 
     pygame.display.update()
     clock.tick(40)
 
-    
 pygame.quit()
