@@ -82,6 +82,13 @@ while running:
             with open('db.txt','w') as database:
                 json.dump(estrelas,database)
 
+            for i in range(len(pontos) -1 ):
+                x, y = pontos[i + 1]
+                distancia = x + y
+                posicaoSoma = (x, y-20)
+                textoRenderizado2 = fonte.render(str(distancia), True, branco)
+                tela.blit(textoRenderizado2, posicaoSoma)
+
     pygame.display.update()
     clock.tick(40)
 
