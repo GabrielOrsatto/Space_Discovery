@@ -8,7 +8,7 @@ tamanho = (1000,563)
 tela = pygame.display.set_mode( tamanho )
 
 icone = pygame.image.load("icone.ico")
-pygame.display.set_icon( icone )
+pygame.display.set_icon(icone)
 
 fundo = pygame.image.load("bg.jpg")
 
