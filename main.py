@@ -49,7 +49,7 @@ while running:
                 with open('db.txt') as database:
                     estrelas = json.load(database)
             except:
-                print("Erro ao salvar os pontos")
+                print("Erro ao carregar os pontos")
 
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F12:
             estrelas.clear()
